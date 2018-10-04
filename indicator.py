@@ -6,6 +6,7 @@ based financial indicators.
 """
 
 from abc import abstractmethod
+from collections import deque
 
 
 class Indicator:
@@ -26,30 +27,50 @@ class Indicator:
                 Inheriting classes will use these.
 
         Params:
-            rd: contains original time-series (_r_aw _d_ata)
-            od: contains same-as-rd-indices _o_utput _d_ata
-        """
-        self.rd = []
+            _rd: contains original time-series (_r_aw _d_ata)
+            _od: contains same-as-rd indices (_o_utput _d_ata)
+            size: sets max array length, indices < end-size fall off as new
+                values are appended. Defaults to 100.
 
-        self.od = []
+        """
+        # Grab the size keyword value, or default to 100.
+        self.size = kwargs.get('size',100)
+        self._rd = deque(maxlen=self.size)
+        self._od = deque(maxlen=self.size)
 
         # Unpack the tuple so that the update method can be used internally and
         # externally.
         self.update(*args)
 
+
     def update(self, *args):
-        """Add new raw data to rd, then (re)runs the algorithm and updates od.
+        """Adds new raw data to rd, then (re)runs the algorithm and updates od.
 
         Append args to the end of rd and apply the indicator's algorithm to
         only the list entries affected.
         """
         try:
             for arg in args:
-                self.rd += arg
+                self._rd += arg
         except TypeError:
-            self.rd += args
+            self._rd += args
         self._algorithm()
 
     @abstractmethod
     def _algorithm(self):
-        pass
+        '''
+        When implementing an indicator, you must override this method.
+        '''
+        self._od = self._rd
+
+    def rd(self):
+        '''
+        Getter for raw data contained in the _rd deque. Returns a list.
+        '''
+        return list(self._rd)
+
+    def od(self):
+        '''
+        Getter for output data contained in the _od deque. Returns a list.
+        '''
+        return list(self._od)

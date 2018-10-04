@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """Implementation of simple moving average.
 
-This module contains an implementation of a simple moving average according to
+This module contains an implementation of a simple moving average accord()ing to
 
 https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
 
 """
 
 import numbers
-from app.indicator import *
+from indicator import *
 
 
 class MovingAverage(Indicator):
@@ -34,19 +34,19 @@ class MovingAverage(Indicator):
 
         # Apply kwargs, if there are any.
         if len(kwargs) > 0:
-            self.period = kwargs['period']
+            self.period = kwargs.get('period')
 
         # Init Indicator class (includes running _algorithm).
         super().__init__(*time_series)
 
     def _algorithm(self):
-        for i in range(len(self.rd)):
+        for i in range(len(self.rd())):
             if i >= self.period - 1:
                 start = i-self.period+1
                 end = i+1
                 # Filter out strings in summation window.
                 to_sum = [
-                        i for i in self.rd[start:end]
+                        i for i in self.rd()[start:end]
                         if isinstance(i, numbers.Number)
                         ]
 
@@ -56,4 +56,4 @@ class MovingAverage(Indicator):
                 # to get an average of availble values.
                 avg = sum(to_sum)/len(to_sum)
             else:
-                self.od.append('')
+                self._od.append('')
