@@ -10,7 +10,7 @@ This way, when implementing a new indicator, the only thing the implementer has 
 ma = MovingAverage(timeseries,period=25)
 ```
 
-Have new data to add? The class automatically handles concatenation and calculating new output data.
+Have new data to add? The class automatically handles concatenation and calculating new output data. The datatype for an input is expected to be a list. The class implementation is naive, so it won't handle lots of different data-types, just a list.
 
 ```python
 new_data = [5,7,12,14]
@@ -18,12 +18,20 @@ new_data = [5,7,12,14]
 ma.update(new_data)
 ```
 
-Access the raw data and the output:
+Access the raw data and algorithm output:
 
 ```python
-raw_data = ma.rd
+raw_data = ma.rd()
 
-output_data = ma.od
+output_data = ma.od()
+```
+
+You can also pass a `size=XXX` argument when instantiating a class. This will set the maximum size of the internal arrays (at this time typed as collections.deque). This is different from the algorithm period, ie the number of elements to run the algorithm over.
+
+For example, if you only want to keep track of 100 days (and your period is <= 100) of data you would instantiate like this:
+
+```python
+indic = MovingAverage(size=100)
 ```
 
 # Why use classes for these? Why not a bunch of functions?
