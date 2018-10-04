@@ -42,17 +42,17 @@ def test_ma_kwargs_period_50():
 # Output, n=5.
 def test_ma_output_n_5(ts_original,ts_ma_5):
     indic = MovingAverage(ts_original,period=5)
-    for od,ad in zip(indic.od[indic.period-1:-1],ts_ma_5[indic.period-1:-1]):
+    for od,ad in zip(indic.od()[indic.period-1:-1],ts_ma_5[indic.period-1:-1]):
         assert math.isclose(od,ad,rel_tol=1e-3)
 
 # Output, n=12.
 def test_ma_output_n_12(ts_original,ts_ma_12):
     indic = MovingAverage(ts_original,period=12)
-    for od,ad in zip(indic.od[indic.period:-1],ts_ma_12[indic.period:-1]):
+    for od,ad in zip(indic.od()[indic.period:-1],ts_ma_12[indic.period:-1]):
         assert math.isclose(od,ad)
 
 # Output, n=50.
 def test_ma_output_n_50(ts_original,ts_ma_50):
     indic = MovingAverage(ts_original,period=50)
-    for od,ad in zip(indic.od[indic.period:-1],ts_ma_50[indic.period:-1]):
+    for od,ad in zip(indic.od()[indic.period:-1],ts_ma_50[indic.period:-1]):
         assert math.isclose(od,ad)
