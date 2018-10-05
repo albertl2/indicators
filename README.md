@@ -41,3 +41,10 @@ This seems like a good application of OO principles and abstraction. These class
 # Contributing
 
 I welcome pull requests. Please implement unit tests that show your algorithm works (don't forget corner cases).
+
+# TODO Implementation
+
+[x] Moving Average
+[ ] MACD (Moving Average Convergence Divergence)
+[ ] RSI (Relative Strength Index)
+[ ] OBV (On Balance Volume)
